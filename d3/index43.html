@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.h-cell {
+			display: inline-block;
+			width: 40px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="compound" class="clear">
+		<p>Compound Interpolation</p>
+	</div>
+
+	<script src="./d3/d3.js"></script>
+	<script>
+		var max = 21, data = [];
+
+		var compoundScale = d3.scalePow()
+			.exponent(2)
+			.domain([0, max])
+			.range([
+				{ color: "#add8e6", height: "15px" },
+				{ color: "#4169e1", height: "150px" }
+			])
+		for(var i = 0; i < max; i++) data.push(i);
+
+		function render (data, scale, selector) {
+			d3.select(selector).selectAll("div.h-cell")
+				.data(data)
+				.enter()
+				.append("div")
+				.classed("h-cell",true)
+				.append("span");
+			d3.select(selector).select("div.h-cell")
+				.data(data)
+				.exit()
+				.remove();
+			d3.select(selector).selectAll("div.h-cell")
+				.data(data)
+				.style("height",function(data) {
+					return scale(data).height
+				})
+				.style("background-color",function(data) {
+					return scale(data).color
+				})
+				.select("span")
+				.text(function(d,i){
+					return i
+				})
+		}
+
+		render(data, compoundScale, "#compound")
+
+	</script>	
+</body>
+</html>

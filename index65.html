@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	
+	<script src="./d3/d3.js"></script>
+	<script>
+	//P129 代码，运行报错， 看不懂！
+		d3.interpolateArray.push(function(a, b){
+			var re = /^([a-z])$/, ma, mb;
+			if((ma = re.exec(a)) && (mb = re.exec(b))) {
+				a = a.charCodeAt(0);
+				var delta = a - b.charCodeAt(0);
+				return function(t) {
+					return Starting.fromCharCode(Math.ceil(a - delta * t));
+				};
+			}
+		});
+
+		var body = d3.select("body");
+
+		var countdown = body.append("div").append("input");
+
+		countdown.attr("type", "button")
+				.attr("value", "a")
+				.transition().duration(4000).delay(300)
+				.attr("value", "z");
+	</script>
+</body>
+</html>

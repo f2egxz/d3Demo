@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Line Tension</title>
+</head>
+
+<body>
+
+<script src="./d3/d3.js"></script>
+<script type="text/javascript">
+    var width = 500,
+        height = 500,
+        margin = 30,
+        duration = 500,    
+        x = d3.scaleLinear()
+            .domain([0, 10])
+            .range([margin, width - margin]),
+        y = d3.scaleLinear()
+            .domain([0, 1])
+            .range([height - margin, margin]);
+        
+    var data = d3.range(10).map(function(i){
+            return {x: i, y: (Math.sin(i * 3) + 1) / 2};
+        });
+    
+    var svg = d3.select("body").append("svg");
+    
+    svg.attr("height", height)
+        .attr("width", width);
+        
+    renderAxes(svg);
+        
+    render(1);    
+    
+    function render(tension){
+        var line = d3.line()
+                .curve(d3.curveCardinal.tension(tension))//绘制的是曲线
+                .x(function(d){return x(d.x);})
+                .y(function(d){return y(d.y);});
+                
+        svg.selectAll("path.line")
+                .data(data)
+                .enter()
+                .append("path")
+                .attr("class", "line");            
+                
+        svg.selectAll("path.line")
+                .data(data)
+                .attr("fill", "transparent")
+                .attr("stroke", "black")                  
+            .transition().duration(duration)
+            .attr("d", function(d){
+                return line(data);
+            });
+            
+        svg.selectAll("circle")
+            .data(data)
+          .enter().append("circle")
+            .attr("class", "dot")
+            .attr("fill", "white")
+            .attr("stroke", "black")
+            .attr("cx", function(d) { return x(d.x); })
+            .attr("cy", function(d) { return y(d.y); })
+            .attr("r", 4.5);
+    }
+    
+    function renderAxes(svg){            
+        xAxis = d3.axisBottom(d3.scaleLinear()
+                    .domain([0, 10])
+                    .range([0, (width - 2 * margin)]));
+ 
+        yAxis = d3.axisLeft(d3.scaleLinear()
+                    .domain([10, 0])
+                    .range([0, (height - 2 * margin)]));
+        
+        svg.append("g")        
+            .attr("class", "axis")
+            .attr("transform", function(){
+                return "translate(" + xStart() + "," + yStart() + ")";
+            })
+            .call(xAxis);
+            
+        svg.append("g")        
+            .attr("class", "axis")
+            .attr("transform", function(){
+                return "translate(" + xStart() + "," + yEnd() + ")";
+            })
+            .call(yAxis);
+    }
+        
+    function xStart(){
+        return margin;
+    }        
+    
+    function yStart(){
+        return height - margin;
+    }
+    
+    function xEnd(){
+        return width - margin;
+    }
+    
+    function yEnd(){
+        return margin;
+    }
+    
+</script>
+
+<h4>Line Tension:</h4>
+<div class="control-group">
+    <button onclick="render(0)">0</button>
+    <button onclick="render(0.2)">0.2</button>
+    <button onclick="render(0.4)">0.4</button>
+    <button onclick="render(0.6)">0.6</button>
+    <button onclick="render(0.8)">0.8</button>
+    <button onclick="render(1)">1</button>
+</div>
+
+</body>
+
+</html>

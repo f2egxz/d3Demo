@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.svg {
+			border: 1px solid #000;
+		}
+	</style>
+</head>
+<body>
+	
+	<script src="./d3/d3.js"></script>
+	<script>
+		var width = 600,
+			height = 500;
+
+		var svg = d3.select("body").append("svg");
+
+		svg.attr("height", height)
+			.attr("width", width)
+			.classed("svg", true)
+
+	//创建Svg元素，去查看SVG 元素
+
+		svg.append("line")
+			.attr("stroke","#000000")
+			.attr("x1", 0)
+			.attr("y1", 200)
+			.attr("x2", 100)
+			.attr("y2", 100);
+
+		svg.append("circle")
+			.attr("stroke", "black")
+			.attr("stroke-width", "2")
+			.attr("fill", "transparent")
+			.attr("cx", 200)
+			.attr("cy", 150)
+			.attr("r", 50);
+			
+
+		svg.append("rect")
+			.attr("x", 300)
+			.attr("y", 100)
+			.attr("width", 100)
+			.attr("height", 100)
+			.attr("rx", 10)
+			.attr("ry", 10);
+
+		svg.append("polygon")
+			.attr("points", "450,200 500,100 550,200");
+	</script>
+</body>
+</html>

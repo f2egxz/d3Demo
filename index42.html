@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.cell {
+			border: 1px solid #ccc;
+			padding: 5px;
+			margin: 5px ;
+			min-width: 40px;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="alphabet" class="clear">
+		<p>Ordinal Scale width Alphabet</p>
+		<p>Mapping [1..10] to ["a".."j"]</p>
+	</div>
+	
+	<div id="category10" class="clear">
+		<p>Ordinal Scale width Category 10</p>
+		<p>Mapping [1..10] to category 10 colors</p>
+	</div>
+
+	<div id="category20" class="clear">
+		<p>Ordinal Scale width Category 20</p>
+		<p>Mapping [1..10] to category 20 colors</p>
+	</div>
+
+	<div id="category20b" class="clear">
+		<p>Ordinal Scale width Category 20b</p>
+		<p>Mapping [1..10] to category 20b colors</p>
+	</div>
+
+	<div id="category20c" class="clear">
+		<p>Ordinal Scale width Category 20c</p>
+		<p>Mapping [1..10] to category 20c colors</p>
+	</div>
+
+	<script src="./d3/d3.js"></script>
+	<script>
+		var max = 10, data = [];
+
+		for (var i = 0; i < max; i++) {
+			data.push(i)
+		}
+
+		var alphabet = d3.scaleOrdinal()
+			.domain(data)
+			.range(['a',"b","c","d","e","f","g","h","i","j"]);
+
+
+
+		function render(data, scale, selector) {
+			d3.select(selector).selectAll("div.cell")
+				.data(data)
+				.enter()
+				.append("div")
+				.classed("cell",true);
+			d3.select(selector).selectAll("div.cell")
+				.data(data)
+				.exit()
+				.remove()
+			d3.select(selector).selectAll("div.cell")
+				.data(data)
+				.style("display","inline-block")
+				.style("background-color",function(data){
+					return scale(data).indexOf("#")>=0?scale(data):"white"
+				})
+				.text(function(data){
+					return scale(data)
+				})
+		}
+
+		render(data, alphabet, "#alphabet")	
+		render(data, d3.scaleOrdinal(d3.schemeCategory10), "#category10")
+		render(data, d3.scaleOrdinal(d3.schemeCategory20), "#category20")
+		render(data, d3.scaleOrdinal(d3.schemeCategory20b), "#category20b")
+		render(data, d3.scaleOrdinal(d3.schemeCategory20c), "#category20c")
+
+	</script>
+</body>
+</html>

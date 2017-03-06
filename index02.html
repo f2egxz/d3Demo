@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#container {
+			border: 1px solid #000;
+			padding: 10px;
+		}
+
+		.v-bar {
+			display: inline-block;
+			width: 40px;
+			border: 1px solid #ccc;
+		}
+
+	</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script src="./d3/d3.js"></script>
+<script>
+	var data = [];
+
+	var next = function(x) {
+		return 15 + x * x;
+	}
+
+	var newData = function() {
+		data.push(next);
+		return data;
+	}
+
+	function render() {
+		var selection = d3.select("#container")
+			.selectAll("div")
+			.data(newData);
+		selection.enter()
+			.append("div")
+			.append("span");
+		selection.attr("class","v-bar")
+			.style("height",function(data, index){
+				return data(index) + "px";
+			})
+			.select("span")
+			.text(function(data, index){
+				return data(index);
+			});
+		selection.exit().remove();
+	}
+
+	setInterval(function(){
+		render()
+	},1500)
+</script>
+
+</body>
+</html>
