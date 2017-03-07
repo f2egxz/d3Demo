@@ -45,7 +45,7 @@
                 console.log(d3.mouse(svg.node()));
                 
         var g = svg.selectAll("g.touch")
-                .data([d3.mouse(svg.node())])
+                .data([d3.mouse(svg.node())] )
         g.enter()
             .append("g")
             .attr("class", "touch")

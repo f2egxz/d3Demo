@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		 path {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: .5px;
+        }
+        path:hover {
+            fill: red;
+        }
+	</style>
+</head>
+<body>
+
+<script src="./d3/d3.js"></script> 
+<script src="./d3/topoJson.js"></script> 
+
+<script>
+    var width = 960,
+        height = 500;
+    var path = d3.path();
+    var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+    var g = svg.append('g')
+            .call(
+                    d3.zoom()
+                        .scaleExtent([1, 10])
+                        .on("zoom", zoom)
+            );
+    d3.json("./d3/us.json", function (error, topology) {
+        g.selectAll("path")
+                .data(topojson.feature(topology, topology.objects.states).features)
+                .enter().append("path")
+                .attr("d", path);
+    });
+    function zoom() {
+        g.attr("transform",  d3.zoomTransform(this));
+    }
+</script>
+</body>
+</html>
